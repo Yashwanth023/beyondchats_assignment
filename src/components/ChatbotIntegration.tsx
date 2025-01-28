@@ -19,23 +19,23 @@ export const ChatbotIntegration = ({ onComplete }: Props) => {
   };
 
   return (
-    <Card className="w-full max-w-2xl p-6 animate-fadeIn">
-      <h2 className="text-2xl font-bold text-center mb-6">
+    <Card className="w-full max-w-2xl p-8 shadow-lg bg-white/90 backdrop-blur-sm animate-fadeIn">
+      <h2 className="text-3xl font-bold text-center mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
         Chatbot Integration
       </h2>
       <Tabs defaultValue="test" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="test">Test Chatbot</TabsTrigger>
-          <TabsTrigger value="integrate">Integration Code</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-2 mb-8">
+          <TabsTrigger value="test" className="text-lg py-3">Test Chatbot</TabsTrigger>
+          <TabsTrigger value="integrate" className="text-lg py-3">Integration Code</TabsTrigger>
         </TabsList>
         <TabsContent value="test" className="mt-4">
-          <div className="space-y-4">
-            <p className="text-gray-600">
-              Test your chatbot before integrating it into your website.
+          <div className="space-y-6">
+            <p className="text-lg text-gray-600 text-center">
+              Test your chatbot before integrating it into your website
             </p>
             <Button
               onClick={handleTest}
-              className="w-full"
+              className="w-full h-12 text-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all duration-300"
               disabled={isTestingChat}
             >
               {isTestingChat ? "Testing..." : "Test Chatbot"}
@@ -43,9 +43,9 @@ export const ChatbotIntegration = ({ onComplete }: Props) => {
           </div>
         </TabsContent>
         <TabsContent value="integrate" className="mt-4">
-          <div className="space-y-4">
-            <div className="bg-gray-100 p-4 rounded-md">
-              <code className="text-sm">
+          <div className="space-y-6">
+            <div className="bg-gray-900 p-6 rounded-lg">
+              <code className="text-sm text-white font-mono">
                 {`<script src="https://beyondchats.com/widget.js"></script>
 <script>
   BeyondChats.init({
@@ -64,7 +64,7 @@ export const ChatbotIntegration = ({ onComplete }: Props) => {
   });
 </script>`);
               }}
-              className="w-full"
+              className="w-full h-12 text-lg border-2 hover:bg-gray-50 transition-all duration-300"
             >
               Copy Integration Code
             </Button>

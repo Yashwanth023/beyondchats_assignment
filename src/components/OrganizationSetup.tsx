@@ -27,12 +27,15 @@ export const OrganizationSetup = ({ onComplete }: Props) => {
   };
 
   return (
-    <Card className="w-full max-w-md p-6 animate-fadeIn">
-      <h2 className="text-2xl font-bold text-center mb-6">Setup Organization</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
+    <Card className="w-full max-w-md p-8 shadow-lg bg-white/90 backdrop-blur-sm animate-fadeIn">
+      <h2 className="text-3xl font-bold text-center mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+        Setup Organization
+      </h2>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="space-y-2">
           <Input
             placeholder="Company Name"
+            className="h-12 text-lg"
             value={formData.companyName}
             onChange={(e) =>
               setFormData({ ...formData, companyName: e.target.value })
@@ -40,10 +43,11 @@ export const OrganizationSetup = ({ onComplete }: Props) => {
             required
           />
         </div>
-        <div>
+        <div className="space-y-2">
           <Input
             placeholder="Website URL"
             type="url"
+            className="h-12 text-lg"
             value={formData.websiteUrl}
             onChange={(e) =>
               setFormData({ ...formData, websiteUrl: e.target.value })
@@ -51,9 +55,10 @@ export const OrganizationSetup = ({ onComplete }: Props) => {
             required
           />
         </div>
-        <div>
+        <div className="space-y-2">
           <Textarea
             placeholder="Company Description"
+            className="min-h-[120px] text-lg"
             value={formData.description}
             onChange={(e) =>
               setFormData({ ...formData, description: e.target.value })
@@ -63,7 +68,7 @@ export const OrganizationSetup = ({ onComplete }: Props) => {
         </div>
         <Button
           type="submit"
-          className="w-full"
+          className="w-full h-12 text-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all duration-300"
           disabled={isScanning}
         >
           {isScanning ? "Scanning Website..." : "Continue"}
