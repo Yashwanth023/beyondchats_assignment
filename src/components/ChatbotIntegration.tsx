@@ -5,6 +5,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { fetchMetaDescription } from "@/utils/urlUtils";
+import { generateAIResponse } from "@/utils/aiUtils";
+import { useToast } from "@/components/ui/use-toast";
 
 interface Message {
   role: "user" | "assistant";
@@ -16,25 +18,46 @@ interface Props {
 }
 
 export const ChatbotIntegration = ({ onComplete }: Props) => {
-  const [isTestingChat, setIsTestingChat] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [url, setUrl] = useState("");
   const [metaDescription, setMetaDescription] = useState("");
+  const { toast } = useToast();
 
   const handleTest = async () => {
-    setIsTestingChat(true);
+    setIsLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 2000));
-    setIsTestingChat(false);
+    setIsLoading(false);
     onComplete();
   };
 
   const handleUrlAnalysis = async () => {
-    if (!url) return;
-    console.log("Analyzing URL:", url);
-    const description = await fetchMetaDescription(url);
-    setMetaDescription(description);
-    addMessage("assistant", `Meta description for ${url}: ${description || "No description found"}`);
+    if (!url) {
+      toast({
+        title: "Error",
+        description: "Please enter a URL",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      console.log("Analyzing URL:", url);
+      const description = await fetchMetaDescription(url);
+      setMetaDescription(description);
+      addMessage("assistant", `Meta description for ${url}: ${description || "No description found"}`);
+    } catch (error) {
+      console.error("Error analyzing URL:", error);
+      toast({
+        title: "Error",
+        description: "Failed to analyze URL",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const addMessage = (role: "user" | "assistant", content: string) => {
@@ -47,17 +70,22 @@ export const ChatbotIntegration = ({ onComplete }: Props) => {
     const userMessage = inputValue.trim();
     setInputValue("");
     addMessage("user", userMessage);
+    setIsLoading(true);
 
-    // Simulate chatbot response
-    setTimeout(() => {
-      let response = "I'm a chatbot assistant. How can I help you today?";
-      if (userMessage.toLowerCase().includes("help")) {
-        response = "I can help you with:\n- Analyzing website URLs\n- Answering general questions\n- Providing integration support";
-      } else if (userMessage.toLowerCase().includes("integration")) {
-        response = "To integrate the chatbot, copy the code from the 'Integration Code' tab and paste it into your website's HTML.";
-      }
+    try {
+      const response = await generateAIResponse(userMessage);
       addMessage("assistant", response);
-    }, 1000);
+    } catch (error) {
+      console.error("Error generating response:", error);
+      toast({
+        title: "Error",
+        description: "Failed to generate response",
+        variant: "destructive",
+      });
+      addMessage("assistant", "I apologize, but I encountered an error. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -93,6 +121,11 @@ export const ChatbotIntegration = ({ onComplete }: Props) => {
                   </div>
                 </div>
               ))}
+              {isLoading && (
+                <div className="text-center text-gray-500">
+                  Thinking...
+                </div>
+              )}
             </ScrollArea>
             <div className="flex gap-2">
               <Input
@@ -101,8 +134,14 @@ export const ChatbotIntegration = ({ onComplete }: Props) => {
                 onKeyPress={(e) => e.key === "Enter" && handleSendMessage()}
                 placeholder="Type your message..."
                 className="flex-1"
+                disabled={isLoading}
               />
-              <Button onClick={handleSendMessage}>Send</Button>
+              <Button 
+                onClick={handleSendMessage}
+                disabled={isLoading}
+              >
+                Send
+              </Button>
             </div>
           </div>
         </TabsContent>
@@ -115,8 +154,14 @@ export const ChatbotIntegration = ({ onComplete }: Props) => {
                 onChange={(e) => setUrl(e.target.value)}
                 placeholder="Enter website URL..."
                 className="flex-1"
+                disabled={isLoading}
               />
-              <Button onClick={handleUrlAnalysis}>Analyze</Button>
+              <Button 
+                onClick={handleUrlAnalysis}
+                disabled={isLoading}
+              >
+                Analyze
+              </Button>
             </div>
             {metaDescription && (
               <div className="p-4 bg-gray-100 rounded-lg">
@@ -148,6 +193,10 @@ export const ChatbotIntegration = ({ onComplete }: Props) => {
     widgetId: "YOUR_WIDGET_ID"
   });
 </script>`);
+                toast({
+                  title: "Success",
+                  description: "Integration code copied to clipboard",
+                });
               }}
               className="w-full h-12 text-lg border-2 hover:bg-gray-50 transition-all duration-300"
             >
