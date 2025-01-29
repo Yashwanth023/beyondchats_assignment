@@ -19,9 +19,9 @@ export const StepIndicator = ({ currentStep }: StepIndicatorProps) => {
   return (
     <div className="w-full max-w-3xl mx-auto mb-8">
       <div className="relative">
-        <div className="absolute top-1/2 left-0 right-0 h-0.5 bg-gray-200 -translate-y-1/2" />
+        <div className="absolute top-1/2 left-0 right-0 h-1 bg-gray-200 -translate-y-1/2 rounded-full" />
         <div
-          className="absolute top-1/2 left-0 h-0.5 bg-primary transition-all duration-500 -translate-y-1/2"
+          className="absolute top-1/2 left-0 h-1 bg-gradient-to-r from-[#9b87f5] to-[#6E59A5] transition-all duration-500 -translate-y-1/2 rounded-full"
           style={{
             width: `${(getCurrentStepIndex() / (steps.length - 1)) * 100}%`,
           }}
@@ -33,15 +33,15 @@ export const StepIndicator = ({ currentStep }: StepIndicatorProps) => {
               className="flex flex-col items-center"
             >
               <div
-                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-colors duration-300 ${
+                className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-300 shadow-lg ${
                   getCurrentStepIndex() >= index
-                    ? "bg-primary text-white"
-                    : "bg-gray-200 text-gray-600"
+                    ? "bg-gradient-to-r from-[#9b87f5] to-[#6E59A5] text-white transform hover:scale-110"
+                    : "bg-white text-gray-600 hover:bg-gray-50"
                 }`}
               >
                 {index + 1}
               </div>
-              <span className="mt-2 text-sm font-medium text-gray-600">
+              <span className="mt-3 text-sm font-medium text-gray-600">
                 {step.label}
               </span>
             </div>
