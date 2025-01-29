@@ -2,9 +2,12 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Confetti from "react-confetti";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export const SuccessScreen = () => {
   const [showConfetti, setShowConfetti] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -13,6 +16,18 @@ export const SuccessScreen = () => {
 
     return () => clearTimeout(timer);
   }, []);
+
+  const handleAdminPanel = () => {
+    console.log("Navigating to admin panel");
+    navigate("/admin");
+    toast.success("Welcome to the Admin Panel!");
+  };
+
+  const handleStartChatbot = () => {
+    console.log("Starting chatbot conversation");
+    navigate("/chat");
+    toast.success("Starting your chatbot conversation!");
+  };
 
   return (
     <div className="relative">
@@ -49,10 +64,14 @@ export const SuccessScreen = () => {
             conversations and customize your chatbot.
           </p>
           <div className="space-y-4">
-            <Button className="w-full h-12 text-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all duration-300">
+            <Button 
+              onClick={handleAdminPanel}
+              className="w-full h-12 text-lg bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 transition-all duration-300"
+            >
               Explore Admin Panel
             </Button>
             <Button
+              onClick={handleStartChatbot}
               variant="outline"
               className="w-full h-12 text-lg border-2 hover:bg-gray-50 transition-all duration-300"
             >
