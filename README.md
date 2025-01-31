@@ -2,7 +2,6 @@
 
 BeyondChats is a modern web application that allows businesses to easily set up and integrate AI-powered chatbots into their websites. Built with Next.js 14, TypeScript, and Tailwind CSS.
 
-![BeyondChats Preview](public/preview.png)
 
 ## 🌟 Features
 
@@ -44,7 +43,7 @@ BeyondChats is a modern web application that allows businesses to easily set up 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/beyondchats.git
+git clone  https://github.com/Yashwanth023/beyondchats_assignment .git
 cd beyondchats
 
 
